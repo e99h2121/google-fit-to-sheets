@@ -40,10 +40,6 @@ function getMetricsForDays(fromDaysAgo, toDaysAgo, tabName) {
         "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
       },
       {
-        "dataTypeName": "com.google.weight.summary",
-        "dataSourceId": "derived:com.google.weight:com.google.android.gms:merge_weight"
-      },
-      {
         "dataTypeName": "com.google.distance.delta",
         "dataSourceId": "derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta"
       }
@@ -71,7 +67,6 @@ function getMetricsForDays(fromDaysAgo, toDaysAgo, tabName) {
     var bucketDate = new Date(parseInt(json.bucket[b].startTimeMillis, 10));
     
     var steps = -1;
-    var weight = -1;
     var distance = -1;
     
     if (json.bucket[b].dataset[0].point.length > 0) {
@@ -79,16 +74,11 @@ function getMetricsForDays(fromDaysAgo, toDaysAgo, tabName) {
     }
     
     if (json.bucket[b].dataset[1].point.length > 0) {
-      weight = json.bucket[b].dataset[1].point[0].value[0].fpVal;
+      distance = json.bucket[b].dataset[1].point[0].value[0].fpVal;
     }
     
-    if (json.bucket[b].dataset[2].point.length > 0) {
-      distance = json.bucket[b].dataset[2].point[0].value[0].fpVal;
-    }
-    
-    sheet.appendRow([bucketDate, 
+    sheet.appendRow([bucketDate,
                      steps == -1 ? ' ' : steps, 
-                     weight == -1 ? ' ' : weight, 
                      distance == -1 ? ' ' : distance]);
   }
 }
@@ -103,7 +93,7 @@ function getFitService() {
 
       // Set the endpoint URLs, which are the same for all Google services.
       .setAuthorizationBaseUrl('https://accounts.google.com/o/oauth2/auth')
-      .setTokenUrl('https://accounts.google.com/o/oauth2/token')
+      .setTokenUrl('https://oauth2.googleapis.com/token') //https://accounts.google.com/o/oauth2/token
 
       // Set the client ID and secret, from the Google Developers Console.
       .setClientId(ClientID)
