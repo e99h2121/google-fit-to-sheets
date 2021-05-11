@@ -79,8 +79,7 @@ function getMetricsForDays(fromDaysAgo, toDaysAgo, tabName) {
     
     //console.log(bucketDate + steps + distance);
     i = 0;
-    var n = steps/1000;
-    n = Math.floor(n)
+    var n = Math.floor(steps/1000)
     while (i<n) {
       myFunctionToPixela();
       i++;
